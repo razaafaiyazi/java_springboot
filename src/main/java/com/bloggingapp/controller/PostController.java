@@ -32,4 +32,9 @@ public class PostController {
         PostDto postDto = postService.getpostById(id);
         return new ResponseEntity<>(postDto,HttpStatus.CREATED);
     }
+    @PutMapping
+    public ResponseEntity<PostDto> updatePost(@RequestBody PostDto postDto){
+        PostDto updatedPost = postService.updatePost(postDto);
+        return new ResponseEntity<>(updatedPost,HttpStatus.CREATED);
+    }
 }
