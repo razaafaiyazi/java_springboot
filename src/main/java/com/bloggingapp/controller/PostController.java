@@ -26,4 +26,10 @@ public class PostController {
         List<PostDto> allPosts = postService.getAllPosts();
         return new ResponseEntity<>(allPosts,HttpStatus.CREATED);
     }
+    //http://localhost:8080/api/posts/id
+    @GetMapping("/{id}")
+    public ResponseEntity<PostDto> findPostById(@PathVariable("id") int id){
+        PostDto postDto = postService.getpostById(id);
+        return new ResponseEntity<>(postDto,HttpStatus.CREATED);
+    }
 }

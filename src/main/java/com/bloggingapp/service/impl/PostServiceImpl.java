@@ -1,6 +1,7 @@
 package com.bloggingapp.service.impl;
 
 import com.bloggingapp.entity.Post;
+import com.bloggingapp.exception.ResourceNotFoundException;
 import com.bloggingapp.payload.PostDto;
 import com.bloggingapp.repository.PostRepository;
 import com.bloggingapp.service.PostService;
@@ -28,6 +29,12 @@ public class PostServiceImpl implements PostService {
     public List<PostDto> getAllPosts() {
         List<Post> allPosts = postRepository.findAll();
         return allPosts.stream().map(post->mapToDto(post)).collect(Collectors.toList());
+    }
+
+    @Override
+    public PostDto getpostById(int id) {
+        Post post = postRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Post","Id",id));
+        return this.mapToDto(post);
     }
 
     private PostDto mapToDto(Post save) {
