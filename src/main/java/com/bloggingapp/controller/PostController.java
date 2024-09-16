@@ -2,6 +2,7 @@ package com.bloggingapp.controller;
 
 
 import com.bloggingapp.payload.PostDto;
+import com.bloggingapp.payload.PostResponse;
 import com.bloggingapp.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,9 +23,12 @@ public class PostController {
         return new ResponseEntity<>(postDto1, HttpStatus.CREATED);
     }
     @GetMapping
-    public ResponseEntity<List<PostDto>> getAllPosts(){
-        List<PostDto> allPosts = postService.getAllPosts();
-        return new ResponseEntity<>(allPosts,HttpStatus.CREATED);
+    public PostResponse getAllPosts(@RequestParam(value = "pageNo",defaultValue = "0", required = false) int pageNo,
+                                                     @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
+                                                     @RequestParam(value = "sortBy", defaultValue = "id", required = false) String sortBy,
+                                                     @RequestParam(value = "sortDir", defaultValue = "ASC", required = false) String sortDir){
+        PostResponse postResponse = postService.getAllPosts(pageNo,pageSize,sortBy,sortDir);
+        return postResponse;
     }
     //http://localhost:8080/api/posts/id
     @GetMapping("/{id}")
@@ -37,4 +41,11 @@ public class PostController {
         PostDto updatedPost = postService.updatePost(postDto);
         return new ResponseEntity<>(updatedPost,HttpStatus.CREATED);
     }
+    //delete post by id
+    @DeleteMapping("/{id}")
+    public String deletePostById(@PathVariable("id") int id){
+        String deleteMsg = postService.deletePost(id);
+        return String.valueOf(new ResponseEntity<>(deleteMsg,HttpStatus.OK));
+    }
+
 }
