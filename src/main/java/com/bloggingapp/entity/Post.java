@@ -4,6 +4,10 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -12,7 +16,7 @@ import lombok.NoArgsConstructor;
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
     @Column(name = "title",nullable = false)
     private String title;
@@ -22,5 +26,8 @@ public class Post {
 
     @Column(name = "content",nullable = false)
     private String content;
+
+    @OneToMany(mappedBy = "post",cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<Comment>();
 
 }

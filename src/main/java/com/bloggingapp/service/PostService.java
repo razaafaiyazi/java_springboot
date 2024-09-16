@@ -10,6 +10,6 @@ import java.util.List;
 public interface PostService {
     PostDto savePost(PostDto post);
     List<PostDto> getAllPosts();
-    PostDto getpostById(int id);
+    PostDto getpostById(long id);
     PostDto updatePost(PostDto postDto);
 }
