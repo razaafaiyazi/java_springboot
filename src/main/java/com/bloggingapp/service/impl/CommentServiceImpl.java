@@ -11,6 +11,9 @@ import com.bloggingapp.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class CommentServiceImpl implements CommentService {
     @Autowired
@@ -25,6 +28,13 @@ public class CommentServiceImpl implements CommentService {
         comment.setPost(post);
         Comment savedComment = commentRepository.save(comment);
         return this.mapToDto(savedComment);
+    }
+
+    @Override
+    public List<CommentDto> findCommentByPostId(long postId) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post", "Id", postId));
+        List<Comment> comments = commentRepository.findByPostId(postId);
+        return comments.stream().map(e->mapToDto(e)).collect(Collectors.toList());
     }
 
     private CommentDto mapToDto(Comment savedComment) {
