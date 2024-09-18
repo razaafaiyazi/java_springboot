@@ -1,5 +1,6 @@
 package com.bloggingapp.controller;
 
+import com.bloggingapp.entity.Comment;
 import com.bloggingapp.payload.CommentDto;
 import com.bloggingapp.service.CommentService;
 import org.springframework.http.HttpStatus;
@@ -26,5 +27,14 @@ public class CommentController {
     @GetMapping("/{id}")
     public ResponseEntity<List<CommentDto>> getCommentByPostId(@PathVariable("id") long postId){
         return new ResponseEntity<>(commentService.findCommentByPostId(postId),HttpStatus.OK);
+    }
+    //get comments by comment id
+    @GetMapping("/posts/{postId}/comments/{id}")
+    public ResponseEntity<CommentDto> getCommentByCommentId(
+            @PathVariable("postId") long postId,
+            @PathVariable("id") long commentId
+    ){
+        CommentDto commentByCommentId = commentService.findCommentByCommentId(postId, commentId);
+        return new ResponseEntity<>(commentByCommentId,HttpStatus.OK);
     }
 }
