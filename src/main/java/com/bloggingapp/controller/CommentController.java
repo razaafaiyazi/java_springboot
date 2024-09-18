@@ -3,6 +3,7 @@ package com.bloggingapp.controller;
 import com.bloggingapp.entity.Comment;
 import com.bloggingapp.payload.CommentDto;
 import com.bloggingapp.service.CommentService;
+import com.sun.net.httpserver.HttpsServer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,5 +37,13 @@ public class CommentController {
     ){
         CommentDto commentByCommentId = commentService.findCommentByCommentId(postId, commentId);
         return new ResponseEntity<>(commentByCommentId,HttpStatus.OK);
+    }
+    // update comments by comment id
+    @PutMapping("/posts/{postId}/comments/{id}")
+    public ResponseEntity<CommentDto> updateCommentById(@RequestBody CommentDto commentDto,
+                                                        @PathVariable("id") long commentId,
+                                                        @PathVariable("postId") long postId){
+        CommentDto commentDto1 = commentService.updateCommentByCommentId(commentId, postId, commentDto);
+        return new ResponseEntity<>(commentDto1, HttpStatus.OK);
     }
 }
