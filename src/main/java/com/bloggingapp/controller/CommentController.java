@@ -4,6 +4,7 @@ import com.bloggingapp.entity.Comment;
 import com.bloggingapp.payload.CommentDto;
 import com.bloggingapp.service.CommentService;
 import com.sun.net.httpserver.HttpsServer;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,14 +20,15 @@ public class CommentController {
         this.commentService=commentService;
     }
 
-    @PostMapping("/{id}")
-    public ResponseEntity<CommentDto> saveComment(@PathVariable("id") long id,@RequestBody CommentDto commentDto){
+    //create comment for a particular post
+    @PostMapping("/posts/{postId}")
+    public ResponseEntity<CommentDto> saveComment(@PathVariable("postId") long id,@Valid @RequestBody CommentDto commentDto){
         CommentDto commentDt = commentService.createComment(id, commentDto);
         return new ResponseEntity<>(commentDt, HttpStatus.CREATED);
     }
     //get all comments by post id
-    @GetMapping("/{id}")
-    public ResponseEntity<List<CommentDto>> getCommentByPostId(@PathVariable("id") long postId){
+    @GetMapping("/posts/{postId}/comments")
+    public ResponseEntity<List<CommentDto>> getCommentByPostId(@PathVariable("postId") long postId){
         return new ResponseEntity<>(commentService.findCommentByPostId(postId),HttpStatus.OK);
     }
     //get comments by comment id
@@ -40,7 +42,7 @@ public class CommentController {
     }
     // update comments by comment id
     @PutMapping("/posts/{postId}/comments/{id}")
-    public ResponseEntity<CommentDto> updateCommentById(@RequestBody CommentDto commentDto,
+    public ResponseEntity<CommentDto> updateCommentById(@Valid @RequestBody CommentDto commentDto,
                                                         @PathVariable("id") long commentId,
                                                         @PathVariable("postId") long postId){
         CommentDto commentDto1 = commentService.updateCommentByCommentId(commentId, postId, commentDto);
