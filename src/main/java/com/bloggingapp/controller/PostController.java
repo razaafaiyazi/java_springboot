@@ -4,6 +4,7 @@ package com.bloggingapp.controller;
 import com.bloggingapp.payload.PostDto;
 import com.bloggingapp.payload.PostResponse;
 import com.bloggingapp.service.PostService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -18,7 +19,7 @@ public class PostController {
     @Autowired
     private PostService postService;
     @PostMapping
-    public ResponseEntity<PostDto> createPost(@RequestBody PostDto postDto){
+    public ResponseEntity<PostDto> createPost(@RequestBody @Valid PostDto postDto){
         PostDto postDto1 = postService.savePost(postDto);
         return new ResponseEntity<>(postDto1, HttpStatus.CREATED);
     }
@@ -37,7 +38,7 @@ public class PostController {
         return new ResponseEntity<>(postDto,HttpStatus.CREATED);
     }
     @PutMapping
-    public ResponseEntity<PostDto> updatePost(@RequestBody PostDto postDto){
+    public ResponseEntity<PostDto> updatePost(@Valid @RequestBody PostDto postDto){
         PostDto updatedPost = postService.updatePost(postDto);
         return new ResponseEntity<>(updatedPost,HttpStatus.CREATED);
     }
