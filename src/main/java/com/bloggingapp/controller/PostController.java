@@ -19,8 +19,9 @@ import java.util.List;
 public class PostController {
     @Autowired
     private PostService postService;
-    @PostMapping
+
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @PostMapping
     public ResponseEntity<PostDto> createPost(@RequestBody @Valid PostDto postDto){
         PostDto postDto1 = postService.savePost(postDto);
         return new ResponseEntity<>(postDto1, HttpStatus.CREATED);
@@ -39,15 +40,17 @@ public class PostController {
         PostDto postDto = postService.getpostById(id);
         return new ResponseEntity<>(postDto,HttpStatus.CREATED);
     }
-    @PutMapping
+
     @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping
     public ResponseEntity<PostDto> updatePost(@Valid @RequestBody PostDto postDto){
         PostDto updatedPost = postService.updatePost(postDto);
         return new ResponseEntity<>(updatedPost,HttpStatus.CREATED);
     }
     //delete post by id
-    @DeleteMapping("/{id}")
+
     @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deletePostById(@PathVariable("id") int id){
         String deleteMsg = postService.deletePost(id);
         return new ResponseEntity<>(deleteMsg,HttpStatus.OK);
